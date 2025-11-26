@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Jogador {
+  id       Int             @id @default(autoincrement())
+  nome     String
+  classe   String
+  nivel    Int
+  missoes  JogadorMissao[] // Relação N:N com Missão
+}
+
+model Missao {
+  id          Int             @id @default(autoincrement())
+  titulo      String
+  descricao   String
+  recompensa  String
+  status      Status          @default(PENDENTE)
+  jogadores   JogadorMissao[] // Relação N:N com Jogador
+}
+
+model JogadorMissao {
+  id         Int      @id @default(autoincrement())
+  jogadorId  Int
+  missaoId   Int
+  progresso  Progresso @default(NAO_INICIADA)
+  atribuidaEm DateTime @default(now())
+  concluidaEm DateTime?
+
+  jogador   Jogador  @relation(fields: [jogadorId], references: [id])
+  missao    Missao   @relation(fields: [missaoId], references: [id])
+
+  @@unique([jogadorId, missaoId]) // impede duplicidade da mesma missão para o mesmo jogador
+}
+
+enum Status {
+  PENDENTE
+  ATIVA
+  CONCLUIDA
+  CANCELADA
+}
+
+enum Progresso {
+  NAO_INICIADA
+  EM_ANDAMENTO
+  CONCLUIDA
+}

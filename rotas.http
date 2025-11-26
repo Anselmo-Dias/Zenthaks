@@ -1,0 +1,76 @@
+@baseUrl = http://localhost:3000
+
+###
+# Jogadores
+###
+
+# Cadastrar um novo jogador
+POST {{baseUrl}}/players
+Content-Type: application/json
+
+{
+  "nome": "oryon",
+  "classe": "mago",
+  "nivel": 4
+}
+
+###
+
+# Listar todos os jogadores
+GET {{baseUrl}}/players
+
+###
+
+# Buscar um jogador específico
+GET {{baseUrl}}/players/1
+
+###
+
+# Atualizar informações de um jogador
+PUT {{baseUrl}}/players/1
+Content-Type: application/json
+
+{
+  "nome": "oryon",
+  "classe": "mago2",
+  "nivel": 5
+}
+
+###
+
+# Excluir jogador
+DELETE {{baseUrl}}/players/1
+
+###
+# Missões
+###
+
+# Criar uma nova missão
+POST {{baseUrl}}/missions
+Content-Type: application/json
+
+{
+  "titulo": "Matar o dragão",
+  "descricao": "O dragão está aterrorizando a vila",
+  "recompensa": "1000 moedas de ouro"
+}
+
+###
+
+# Atribuir uma missão a um jogador
+POST {{baseUrl}}/players/2/missions/1/assign
+
+###
+
+# Jogador inicia uma missão
+PATCH {{baseUrl}}/players/1/missions/1/start
+
+###
+
+# Jogador completa uma missão
+PATCH {{baseUrl}}/players/1/missions/1/complete
+
+###
+
+# Listar as missões de um jogador específico
+GET {{baseUrl}}/players/1/missions
