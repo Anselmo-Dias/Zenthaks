@@ -37,7 +37,7 @@ export const updateJogador = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { nome, classe, nivel } = req.body;
   try {
-    const updatedJogador = await jogadorService.updateJogador(Number(id), nome, classe, nivel);
+    const updatedJogador = await jogadorService.updateJogador(Number(id), nome, classe, Number(nivel));
     if (!updatedJogador) {
       return res.status(404).json({ message: 'Jogador not found' });
     }

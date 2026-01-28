@@ -1,6 +1,15 @@
 import { Request, Response } from 'express';
 import * as missaoService from '../services/missaoService.js';
 
+export const getAllMissions = async (req: Request, res: Response) => {
+  try {
+    const todasMissoes = await missaoService.getAll();
+    res.status(200).json(todasMissoes);
+  } catch (error) {
+    res.status(500).json({ message: 'Error get all missions', error });
+  }
+};
+
 export const createMissao = async (req: Request, res: Response) => {
   const { titulo, descricao, recompensa } = req.body;
   try {

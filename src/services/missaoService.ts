@@ -2,6 +2,10 @@ import { PrismaClient, Progresso, JogadorMissao, Missao } from '../generated/pri
 
 const prisma = new PrismaClient();
 
+export const getAll = async (): Promise<Missao[]> => {
+  return await prisma.missao.findMany()
+};
+
 export const createMissao = async (titulo: string, descricao: string, recompensa: string): Promise<Missao> => {
   return await prisma.missao.create({
     data: {

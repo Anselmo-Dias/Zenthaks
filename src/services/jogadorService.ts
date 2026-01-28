@@ -15,7 +15,7 @@ export const createJogador = async (nome: string, classe: string, nivel: number)
     data: {
       nome,
       classe,
-      nivel,
+      nivel: Number(nivel),
     },
   });
 };
@@ -26,11 +26,15 @@ export const updateJogador = async (id: number, nome: string, classe: string, ni
     data: {
       nome,
       classe,
-      nivel,
+      nivel: Number(nivel),
     },
   });
 };
 
 export const deleteJogador = async (id: number): Promise<Jogador | null> => {
-  return await prisma.jogador.delete({ where: { id } });
+  const [_, deletedJogador] = await prisma.$transaction([
+    prisma.jogadorMissao.deleteMany({ where: { jogadorId: id } }),
+    prisma.jogador.delete({ where: { id } }),
+  ]);
+  return deletedJogador;
 };
